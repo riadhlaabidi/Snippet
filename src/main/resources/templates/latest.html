@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+      th:replace="~{layout/base :: base (~{::title},
+                                         ~{::link},
+                                         ~{::script},
+                                         ~{::header},
+                                         ~{::section})}">
+<head>
+    <title>Latest</title>
+    <link rel="stylesheet" th:href="@{/css/highlightjs/default.min.css}">
+    <script th:src="@{/js/highlightjs/highlight.min.js}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<header class="banner">
+    <h1>Latest shared snippets</h1>
+    <div class="horizontal-divider"></div>
+</header>
+<section>
+    <ul class="latest-snippets" th:unless="${list.isEmpty()}">
+        <li th:each="item : ${list}">
+            <div class="snippet-url">
+                <h2>Snippet</h2>
+                <p id="uuid" class="center" th:text="${'#' + item.uuid}"></p>
+            </div>
+            <div class="snippet-form">
+                <a th:href="@{/code/{uuid}(uuid=${item.uuid})}">
+                <div class="snippet-header">
+                    <p class="creation-date">Created on :<span id="load_date" th:text="${' ' + #temporals.format(item.date, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                </div>
+                <div class="horizontal-divider"></div>
+                <div class="snippet-body">
+                    <pre class="max-h"><code class="no-scroll" th:text="${item.code}"></code></pre>
+                </div>
+                </a>
+            </div>
+        </li>
+    </ul>
+    <div class="banner" th:if="${list.isEmpty()}">
+        <h2 class="empty text-center">No shared snippets found.</h2>
+    </div>
+</section>
+</body>
+</html>

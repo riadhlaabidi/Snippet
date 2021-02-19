@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: base (~{::title},
+                                         ~{::link},
+                                         ~{::script},
+                                         ~{::.banner},
+                                         ~{::section})}">
+<head>
+    <title>Code</title>
+    <link rel="stylesheet" th:href="@{/css/highlightjs/default.min.css}">
+    <script th:src="@{/js/copy.js}" ></script>
+    <script th:src="@{/js/highlightjs/highlight.min.js}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<header class="banner">
+    <div class="snippet-url">
+        <h1>Snippet<span id="uuid" th:text="${'#' + code_obj.uuid}"></span>
+            <span class="privacy-badge"
+                  th:text="${code_obj.restrictedByTime or code_obj.restrictedByViews} ? 'Restricted' : 'Public'"
+                  th:classappend="${code_obj.restrictedByTime or code_obj.restrictedByViews} ? 'restricted' : 'public'">
+            </span>
+        </h1>
+        <input type="hidden" id="copy_in" th:value="${#httpServletRequest.requestURL}">
+        <button onclick="copyToClip()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-front" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5z"></path>
+            </svg>
+            <span id="copy_cb">Copy URL</span>
+        </button>
+    </div>
+    <div class="restrictions" th:if="${code_obj.restrictedByTime or code_obj.restrictedByViews}">
+        <span id="views_restriction" th:if="${code_obj.restrictedByViews}">
+            Remaining views :<span class="privacy-badge restricted" th:text="${code_obj.views}"></span>
+        </span>
+        <span id="time_restriction" th:if="${code_obj.restrictedByTime}">
+            Remaining time :<span class="privacy-badge restricted" th:text="${code_obj.time + ' seconds'}"></span>
+        </span>
+    </div>
+</header>
+<section class="snippet-form">
+    <div class="snippet-header">
+        <p class="creation-date">
+            Created on :<span id="load_date" th:text="${' ' + #temporals.format(code_obj.date, 'yyyy-MM-dd HH:mm:ss')}" ></span>
+        </p>
+    </div>
+    <div class="horizontal-divider"></div>
+    <div class="snippet-body">
+        <pre id="code_snippet">
+            <code class="custom-sb" th:text="${code_obj.code}"></code>
+        </pre>
+    </div>
+</section>
+</body>
+</html>

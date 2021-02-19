@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: base (~{::title},
+                                         _,
+                                         ~{::script},
+                                         ~{::.banner},
+                                         ~{::section})}">
+<head>
+    <title>Create</title>
+    <script th:src="@{/js/script.js}" defer></script>
+</head>
+    <header class="banner text-center">
+        <h1>Share snippets instantly.</h1>
+    </header>
+    <section class="snippet">
+        <div class="snippet-form">
+            <div class="snippet-header">
+                <ul class="center">
+                    <li class="option center">
+                        <input type="radio" id="public" name="privacy" value="public" checked>
+                        <label for="public">Public</label>
+                    </li>
+                    <li><div class="vertical-divider"></div></li>
+                    <li class="option center">
+                        <input type="radio" id="private" name="privacy" value="private">
+                        <label for="private">Restricted</label>
+                    </li>
+                    <li id="private_options" hidden>
+                        <div class="option center">
+                            <div class="vertical-divider"></div>
+                            <label for="time_restriction" id="time_label">Time limit (seconds)</label>
+                            <input type="number" id="time_restriction" min="1" placeholder="No limit">
+                            <div class="vertical-divider"></div>
+                            <label for="views_restriction" id="views_label">Views limit</label>
+                            <input type="number" id="views_restriction" min="1" placeholder="No limit">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="horizontal-divider"></div>
+            <div class="snippet-body">
+                <textarea id="code_snippet" class="custom-sb" placeholder="// Write your snippet here ..." autofocus ></textarea>
+            </div>
+        </div>
+        <button id="send_snippet" type="submit" onclick="send()">Share</button>
+    </section>
+</html>

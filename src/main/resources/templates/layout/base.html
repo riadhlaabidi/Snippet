@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="base (title, links, scripts, banner, content)">
+<head>
+    <!-- Common head -->
+    <meta charset="UTF-8">
+    <title th:replace="${title}"></title>
+    <link rel="icon" type="image/svg" th:href="@{/images/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- View specific additional links -->
+    <th:block th:replace="${links}" />
+    <th:block th:replace="${scripts}" />
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+    <header th:replace="${banner}"></header>
+    <section th:replace="${content}"></section>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
