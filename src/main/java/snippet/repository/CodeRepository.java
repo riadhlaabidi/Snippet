@@ -3,7 +3,7 @@ package snippet.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 import snippet.model.Code;
-import snippet.exception.CodeNotFoundException;
+import snippet.exception.SnippetNotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -31,7 +31,7 @@ public interface CodeRepository extends CrudRepository<Code, Long> {
         if (code.isRestrictedByViews()) {
             if (code.getViews() == 0) {
                 deleteByUuid(code.getUuid());
-                throw new CodeNotFoundException();
+                throw new SnippetNotFoundException();
             }
             updateViews(code);
         }
@@ -40,7 +40,7 @@ public interface CodeRepository extends CrudRepository<Code, Long> {
                     .until(code.getDate().plusSeconds(code.getTime()), ChronoUnit.SECONDS);
             if (difference <= 0) {
                 deleteByUuid(code.getUuid());
-                throw new CodeNotFoundException();
+                throw new SnippetNotFoundException();
             }
             updateTime(code, difference);
         }

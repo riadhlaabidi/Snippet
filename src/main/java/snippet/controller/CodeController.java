@@ -6,14 +6,16 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import snippet.model.Code;
-import snippet.exception.CodeNotFoundException;
+import snippet.exception.SnippetNotFoundException;
 import snippet.repository.CodeRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/code")
 public class CodeController {
 
     private final CodeRepository codeRepository;
@@ -23,15 +25,15 @@ public class CodeController {
        this.codeRepository = codeRepository;
     }
 
-    @GetMapping("/code/new")
+    @GetMapping("/new")
     public String newCode() {
         return "create";
     }
 
-    @GetMapping("/code/{uuid}")
-    public String getCode(@PathVariable UUID uuid, Model model) {
+    @GetMapping("/{uuid}")
+    public String getCode(@PathVariable final UUID uuid, final Model model) {
         final Code code = codeRepository.findByUuid(uuid).orElseThrow(
-                CodeNotFoundException::new
+                SnippetNotFoundException::new
         );
         if (code.isRestrictedByTime() || code.isRestrictedByViews()) {
             codeRepository.updateTimeAndViews(code);
@@ -40,8 +42,8 @@ public class CodeController {
         return "code";
     }
 
-    @GetMapping("/code/latest")
-    public String latest(Model model) {
+    @GetMapping("/latest")
+    public String latest(final Model model) {
         List<Code> list = codeRepository.latestTenPublicSnippets();
         model.addAttribute("list", list);
         return "latest";
