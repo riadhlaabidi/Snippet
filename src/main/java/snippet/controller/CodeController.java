@@ -8,21 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import snippet.model.Code;
-import snippet.exception.SnippetNotFoundException;
-import snippet.repository.CodeRepository;
+import snippet.repository.SnippetService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/code")
 public class CodeController {
 
-    private final CodeRepository codeRepository;
+    private final SnippetService snippetService;
 
     @Autowired
-    public CodeController(CodeRepository codeRepository) {
-       this.codeRepository = codeRepository;
+    public CodeController(SnippetService snippetService) {
+       this.snippetService = snippetService;
     }
 
     @GetMapping("/new")
@@ -32,20 +30,17 @@ public class CodeController {
 
     @GetMapping("/{uuid}")
     public String getCode(@PathVariable final UUID uuid, final Model model) {
-        final Code code = codeRepository.findByUuid(uuid).orElseThrow(
-                SnippetNotFoundException::new
-        );
-        if (code.isRestrictedByTime() || code.isRestrictedByViews()) {
-            codeRepository.updateTimeAndViews(code);
+        final Code snippet = snippetService.get(uuid);
+        if (snippet.isRestrictedByTime() || snippet.isRestrictedByViews()) {
+            snippetService.updateTimeAndViews(snippet);
         }
-        model.addAttribute("code_obj", code);
+        model.addAttribute("snippet", snippet);
         return "code";
     }
 
     @GetMapping("/latest")
     public String latest(final Model model) {
-        List<Code> list = codeRepository.latestTenPublicSnippets();
-        model.addAttribute("list", list);
+        model.addAttribute("list", snippetService.latestSnippets());
         return "latest";
     }
 }

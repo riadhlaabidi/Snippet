@@ -16,10 +16,10 @@
 <body>
 <header class="banner">
     <div class="snippet-url">
-        <h1>Snippet<span id="uuid" th:text="${'#' + code_obj.uuid}"></span>
+        <h1>Snippet<span id="uuid" th:text="${'#' + snippet.uuid}"></span>
             <span class="privacy-badge"
-                  th:text="${code_obj.restrictedByTime or code_obj.restrictedByViews} ? 'Restricted' : 'Public'"
-                  th:classappend="${code_obj.restrictedByTime or code_obj.restrictedByViews} ? 'restricted' : 'public'">
+                  th:text="${snippet.restrictedByTime or snippet.restrictedByViews} ? 'Restricted' : 'Public'"
+                  th:classappend="${snippet.restrictedByTime or snippet.restrictedByViews} ? 'restricted' : 'public'">
             </span>
         </h1>
         <input type="hidden" id="copy_in" th:value="${#httpServletRequest.requestURL}">
@@ -30,25 +30,25 @@
             <span id="copy_cb">Copy URL</span>
         </button>
     </div>
-    <div class="restrictions" th:if="${code_obj.restrictedByTime or code_obj.restrictedByViews}">
-        <span id="views_restriction" th:if="${code_obj.restrictedByViews}">
-            Remaining views :<span class="privacy-badge restricted" th:text="${code_obj.views}"></span>
+    <div class="restrictions" th:if="${snippet.restrictedByTime or snippet.restrictedByViews}">
+        <span id="views_restriction" th:if="${snippet.restrictedByViews}">
+            Remaining views :<span class="privacy-badge restricted" th:text="${snippet.views}"></span>
         </span>
-        <span id="time_restriction" th:if="${code_obj.restrictedByTime}">
-            Remaining time :<span class="privacy-badge restricted" th:text="${code_obj.time + ' seconds'}"></span>
+        <span id="time_restriction" th:if="${snippet.restrictedByTime}">
+            Remaining time :<span class="privacy-badge restricted" th:text="${snippet.time + ' seconds'}"></span>
         </span>
     </div>
 </header>
 <section class="snippet-form">
     <div class="snippet-header">
         <p class="creation-date">
-            Created on :<span id="load_date" th:text="${' ' + #temporals.format(code_obj.date, 'yyyy-MM-dd HH:mm:ss')}" ></span>
+            Created on :<span id="load_date" th:text="${' ' + #temporals.format(snippet.date, 'yyyy-MM-dd HH:mm:ss')}" ></span>
         </p>
     </div>
     <div class="horizontal-divider"></div>
     <div class="snippet-body">
         <pre id="code_snippet">
-            <code class="custom-sb" th:text="${code_obj.code}"></code>
+            <code class="custom-sb" th:text="${snippet.code}"></code>
         </pre>
     </div>
 </section>
