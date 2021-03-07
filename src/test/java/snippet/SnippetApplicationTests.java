@@ -40,7 +40,7 @@ public class SnippetApplicationTests extends SpringTest {
 
 	final String[] SNIPPETS = {
 			"public static void ...",
-			"class Code { ...",
+			"class Snippet { ...",
 			"Snippet #3",
 			"Snippet #4",
 			"Snippet #5",
@@ -373,7 +373,7 @@ public class SnippetApplicationTests extends SpringTest {
 		String html = resp.getContent();
 		Document doc = Jsoup.parse(html);
 
-		checkTitle(doc, req, "Code");
+		checkTitle(doc, req, "Snippet");
 
 		Element pre = getById(doc, req, "code_snippet", "pre");
 		Element code = getSingleTag(pre, req, "code");

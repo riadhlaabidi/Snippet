@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-public class Code {
+public class Snippet {
 
     @Id
     @JsonIgnore
@@ -39,7 +39,7 @@ public class Code {
     @Column(name = "is_restricted_by_time", nullable = false)
     private boolean restrictedByTime;
 
-    public Code() {
+    public Snippet() {
         date = LocalDateTime.now();
         uuid = UUID.randomUUID();
     }

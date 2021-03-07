@@ -25,13 +25,15 @@
                 <p id="uuid" class="center" th:text="${'#' + item.uuid}"></p>
             </div>
             <div class="snippet-form">
-                <a th:href="@{/code/{uuid}(uuid=${item.uuid})}">
+                <a th:href="@{/{uuid}(uuid=${item.uuid})}">
                 <div class="snippet-header">
                     <p class="creation-date">Created on :<span id="load_date" th:text="${' ' + #temporals.format(item.date, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
                 </div>
                 <div class="horizontal-divider"></div>
                 <div class="snippet-body">
-                    <pre class="max-h"><code class="no-scroll" th:text="${item.code}"></code></pre>
+                    <pre class="max-h">
+                        <code class="no-scroll" th:text="${item.code}"></code>
+                    </pre>
                 </div>
                 </a>
             </div>

@@ -6,20 +6,18 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import snippet.model.Code;
-import snippet.repository.SnippetService;
+import snippet.model.Snippet;
+import snippet.persistence.service.SnippetService;
 
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/code")
-public class CodeController {
+public class SnippetController {
 
     private final SnippetService snippetService;
 
     @Autowired
-    public CodeController(SnippetService snippetService) {
+    public SnippetController(SnippetService snippetService) {
        this.snippetService = snippetService;
     }
 
@@ -30,7 +28,7 @@ public class CodeController {
 
     @GetMapping("/{uuid}")
     public String getCode(@PathVariable final UUID uuid, final Model model) {
-        final Code snippet = snippetService.get(uuid);
+        final Snippet snippet = snippetService.get(uuid);
         if (snippet.isRestrictedByTime() || snippet.isRestrictedByViews()) {
             snippetService.updateTimeAndViews(snippet);
         }

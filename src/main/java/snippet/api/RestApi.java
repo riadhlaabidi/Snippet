@@ -2,10 +2,8 @@ package snippet.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import snippet.model.Code;
-import snippet.exception.SnippetNotFoundException;
-import snippet.repository.CodeRepository;
-import snippet.repository.SnippetService;
+import snippet.model.Snippet;
+import snippet.persistence.service.SnippetService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/api/code")
+@RequestMapping("/api")
 public class RestApi {
 
     private final SnippetService snippetService;
@@ -24,18 +22,18 @@ public class RestApi {
     }
 
     @PostMapping(value = "/new", consumes = "application/json")
-    public HashMap<String, UUID> newCode(@RequestBody final Code code) {
-        code.setRestrictedByTime(code.getTime() != 0);
-        code.setRestrictedByViews(code.getViews() != 0);
-        snippetService.add(code);
+    public HashMap<String, UUID> newCode(@RequestBody final Snippet snippet) {
+        snippet.setRestrictedByTime(snippet.getTime() != 0);
+        snippet.setRestrictedByViews(snippet.getViews() != 0);
+        snippetService.add(snippet);
         var out = new HashMap<String, UUID>();
-        out.put("id", code.getUuid());
+        out.put("id", snippet.getUuid());
         return out;
     }
 
     @GetMapping("/{uuid}")
-    public Code getCode(@PathVariable final UUID uuid) {
-        Code snippet = snippetService.get(uuid);
+    public Snippet getCode(@PathVariable final UUID uuid) {
+        Snippet snippet = snippetService.get(uuid);
         if (snippet.isRestrictedByTime() || snippet.isRestrictedByViews()) {
             snippetService.updateTimeAndViews(snippet);
         }
@@ -43,7 +41,7 @@ public class RestApi {
     }
 
     @GetMapping("/latest")
-    public List<Code> latest() {
+    public List<Snippet> latest() {
         return snippetService.latestSnippets();
     }
 }
