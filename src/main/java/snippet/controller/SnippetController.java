@@ -33,7 +33,7 @@ public class SnippetController {
             snippetService.updateTimeAndViews(snippet);
         }
         model.addAttribute("snippet", snippet);
-        return "code";
+        return "snippet";
     }
 
     @GetMapping("/latest")

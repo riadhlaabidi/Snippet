@@ -29,14 +29,14 @@ public class SnippetApplicationTests extends SpringTest {
 		super(SnippetApplication.class, "../snippets.mv.db");
 	}
 
-	final String API_CODE = "/api/code/";
-	final String WEB_CODE = "/code/";
+	final String API_CODE = "/api/";
+	final String WEB_CODE = "/";
 
-	final String API_CODE_NEW = "/api/code/new";
-	final String WEB_CODE_NEW = "/code/new";
+	final String API_CODE_NEW = "/api/new";
+	final String WEB_CODE_NEW = "/new";
 
-	final String API_LATEST = "/api/code/latest";
-	final String WEB_LATEST = "/code/latest";
+	final String API_LATEST = "/api/latest";
+	final String WEB_LATEST = "/latest";
 
 	final String[] SNIPPETS = {
 			"public static void ...",
@@ -373,7 +373,7 @@ public class SnippetApplicationTests extends SpringTest {
 		String html = resp.getContent();
 		Document doc = Jsoup.parse(html);
 
-		checkTitle(doc, req, "Snippet");
+		checkTitle(doc, req, "Snippet │ Content");
 
 		Element pre = getById(doc, req, "code_snippet", "pre");
 		Element code = getSingleTag(pre, req, "code");
@@ -448,7 +448,7 @@ public class SnippetApplicationTests extends SpringTest {
 		String html = resp.getContent();
 		Document doc = Jsoup.parse(html);
 
-		checkTitle(doc, WEB_CODE_NEW, "Create");
+		checkTitle(doc, WEB_CODE_NEW, "Snippet │ Create");
 
 		getById(doc, WEB_CODE_NEW, "code_snippet", "textarea");
 		getById(doc, WEB_CODE_NEW, "send_snippet", "button");
@@ -535,7 +535,7 @@ public class SnippetApplicationTests extends SpringTest {
 		String html = resp.getContent();
 		Document doc = Jsoup.parse(html);
 
-		checkTitle(doc, req, "Latest");
+		checkTitle(doc, req, "Snippet │ Latest");
 
 		Elements preList = getElemsByTag(doc, req, "pre", ids.length);
 		Elements spanList = getElemsByTag(doc, req, "span", ids.length);
